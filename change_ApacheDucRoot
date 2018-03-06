@@ -1,0 +1,50 @@
+You'll have to edit apache2.conf and 000-default.conf to change the document root of apache.
+
+The Apache server is installed on var/www/html.This is the default root directory of apache.
+
+Either change the root directory of Apache or move the project to /var/www/html.
+
+    To change Apache's root directory, run:
+
+    cd /etc/apache2/sites-available
+
+    Then open the 000-default.conf file using the command:
+
+    nano 000-default.conf
+
+    Edit the DocumentRoot option:
+
+    DocumentRoot /path/to/my/project
+
+    Then restart the apache server:
+
+    sudo service apache2 restart
+
+If you get Forbidden You don't have permission to access / on this server after changing the root of apache then do follow these steps
+
+    Find the apache2.conf located in /etc/apache2 and open it using:
+
+    nano apache2.conf
+
+    Use Ctrl+W and search for Directory (It should be in line 153)
+
+    It should look like this
+
+    <Directory />
+        Options Indexes FollowSymLinks
+        AllowOverride All
+        Require all denied
+    </Directory>
+
+    Change it to
+
+    <Directory />
+        Options Indexes FollowSymLinks Includes ExecCGI
+        AllowOverride All
+        Require all granted
+        
+        </Directory>
+
+Restart apache
+
+sudo service apache2 restart
